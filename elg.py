@@ -47,19 +47,13 @@ def gcd(a, b):
 
 class Elgamal:
     def __init__(self):
-        print("-----------------------")
         print("key generation")
-        print("-----------------------")
-
         self.g = 2
         self.p = getPrime(32, randfunc=get_random_bytes)
         self.x = random.randint(1, self.p-2)
         self.y = pow(self.g, self.x, self.p)
 
-        """config = ElGamal.generate(512, get_random_bytes)
-        p = getattr(config, 'p')"""
-
-        print("public key: (p=", self.p, ", g=", self.g, ", y=", self.y, ")")
+        print("public key: (p =", self.p, ", g =", self.g, ", y =", self.y, ")")
         print("private key: ", self.x)
 
     def get_public(self):
@@ -68,22 +62,13 @@ class Elgamal:
     def get_private(self):
         return self.x
 
-        # ------------------------------
-        # digital signatures
-
     def sign(self, hash):
-        print("-----------------------")
-        print("digital signature")
-        print("-----------------------")
-
         print("signing")
 
         k = random.randint(1, self.p-1)
 
         while gcd(self.p-1, k) != 1:
             k = random.randint(1, self.p-1)
-
-        #print("random key: ",k)
 
         r = pow(self.g, k, self.p)
         s = (hash - self.x*r) * modInverse(k, self.p-1) % (self.p-1)
@@ -104,28 +89,6 @@ class Elgamal:
         else:
             print("invalid signature detected")
             return False
-
-
-# print("-----------------------")
-# print("encryption decryption")
-# print("-----------------------")
-# print("encryption")
-# # Bob knows g, p, y
-
-# m = 100
-# k = random.randint(1, p-1)
-
-# c1 = pow(g, k, p)
-# c2 = m * pow(y, k, p) % p
-
-# print("ciphertext: (c1=", c1, ", c2=", c2, ")")
-
-# # bob sends c1, c2 pair to alice
-
-# print("decryption")
-
-# restored = c2 * pow(c1, (p-1-x), p) % p
-# print("restored message: ", restored)
 
 
 elg = Elgamal()
